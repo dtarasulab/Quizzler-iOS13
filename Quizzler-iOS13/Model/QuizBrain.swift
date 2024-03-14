@@ -10,7 +10,7 @@ import Foundation
 
 struct QuizBrain {
     
-    let quiz = [
+    var quiz = [
         Question(q: "A slug's blood is green.", a: "True"),
         Question(q: "Approximately one quarter of human bones are in the feet.", a: "True"),
         Question(q: "The total surface area of two human lungs is approximately 70 square metres.", a: "True"),
@@ -26,18 +26,19 @@ struct QuizBrain {
     ]
     
     var questionNumber = 0
-    var score = 0
+    var score = 0.0
+    let questionTime = 10.0
     
-    mutating func checkAnswer(userAnswer: String) -> Bool {
+    mutating func checkAnswer(userAnswer: String, timeTaken: Double) -> Bool {
         if userAnswer == quiz[questionNumber].answer {
-            score += 1
+            score += (questionTime - timeTaken) * questionTime
             return true
         } else {
             return false
         }
     }
     
-    func getScore() -> Int {
+    func getScore() -> Double {
         return score
     }
     
@@ -45,9 +46,17 @@ struct QuizBrain {
         return quiz[questionNumber].text
     }
     
+    func getQuestionAnswer() -> String {
+        return quiz[questionNumber].answer
+    }
+    
     func getProgress() -> Float {
-        let progress = Float(questionNumber) / Float(quiz.count)
+        let progress = Float(questionNumber + 1) / Float(quiz.count)
         return progress
+    }
+    
+    mutating func shuffleQuestions() {
+        quiz.shuffle()
     }
     
     mutating func nextQuestion() {
@@ -56,6 +65,7 @@ struct QuizBrain {
         } else {
             questionNumber = 0
             score = 0
+            shuffleQuestions()
         }
     }
 }
