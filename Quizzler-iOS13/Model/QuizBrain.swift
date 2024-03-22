@@ -3,7 +3,6 @@
 //  Quizzler-iOS13
 //
 //  Created by Dennis Tarasula on 3/13/24.
-//  Copyright © 2024 The App Brewery. All rights reserved.
 //
 
 import Foundation
@@ -27,11 +26,15 @@ struct QuizBrain {
     
     var questionNumber = 0
     var score = 0.0
+    var highScore = 0.0
     let questionTime = 10.0
     
     mutating func checkAnswer(userAnswer: String, timeTaken: Double) -> Bool {
         if userAnswer == quiz[questionNumber].answer {
             score += (questionTime - timeTaken) * questionTime
+            if score > highScore {
+                highScore = score
+            }
             return true
         } else {
             return false
@@ -40,6 +43,10 @@ struct QuizBrain {
     
     func getScore() -> Double {
         return score
+    }
+    
+    func getHighScore() -> Double {
+        return highScore
     }
     
     func getQuestionText() -> String {

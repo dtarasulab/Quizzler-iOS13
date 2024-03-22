@@ -3,21 +3,24 @@
 //  Quizzler-iOS13
 //
 //  Created by Angela Yu on 12/07/2019.
-//  Edited by Dennis Tarasula on March 13, 2024.
+//  Edited by Dennis Tarasula on March 21, 2024.
 //  Copyright © 2019 The App Brewery. All rights reserved.
 //
 //  Enhancements:
 //  1. The questions are randomly shuffled when the a new game is played.
 //  2. A timer for each question and a scoring system that gives more points for answering faster, similar to Kahoot.
-//
+//  3. Added a label to keep track of the high score.
 
 import UIKit
 
 class ViewController: UIViewController {
     
     @IBOutlet weak var scoreLabel: UILabel!
+    @IBOutlet weak var highScoreLabel: UILabel!
     @IBOutlet weak var questionLabel: UILabel!
+    
     @IBOutlet weak var progressBar: UIProgressView!
+    
     @IBOutlet weak var trueButton: UIButton!
     @IBOutlet weak var falseButton: UIButton!
     
@@ -60,6 +63,7 @@ class ViewController: UIViewController {
         questionLabel.text = quizBrain.getQuestionText()
         progressBar.progress = quizBrain.getProgress()
         scoreLabel.text = "Score: \(String(format: "%.0f", quizBrain.getScore()))"
+        highScoreLabel.text = "High Score: \(String(format: "%.0f", quizBrain.getHighScore()))"
         trueButton.backgroundColor = UIColor.clear
         falseButton.backgroundColor = UIColor.clear
     }
@@ -73,7 +77,7 @@ class ViewController: UIViewController {
         if timeRemaining > 0.01 {
             timeRemaining -= 0.01
             timeLabel.text = "Time left: \(String(format: "%.2f", timeRemaining))"
-            let currentProgress = Float(timeRemaining / QuizBrain().questionTime)
+            let currentProgress = Float(timeRemaining) / Float(QuizBrain().questionTime)
             timeProgressBar.setProgress(currentProgress, animated: true)
         } else {
             questionTimer?.invalidate()
@@ -88,4 +92,3 @@ class ViewController: UIViewController {
         }
     }
 }
-
